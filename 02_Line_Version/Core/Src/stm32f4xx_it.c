@@ -30,7 +30,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "main.h"
-
 /** @addtogroup Template_Project
   * @{
   */
@@ -140,19 +139,9 @@ void PendSV_Handler(void)
   * @retval None
   */
 
-static __IO uint32_t TimingDelay;
-
-void TimingDelay_Decrement(void)
-{
-  if (TimingDelay != 0x00)
-  { 
-    TimingDelay--;
-  }
-}
-
 void SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
+  
 }
 
 /******************************************************************************/
@@ -178,19 +167,6 @@ void SysTick_Handler(void)
   * @retval None
   */
 
-__weak void TIM3_IT_Update_Callback()
-{
-	
-}
-void TIM3_IRQHandler(void)
-{
-  if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
-  {
-    TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
-    TIM3_IT_Update_Callback();
-  }
-  
-}
 
  
 /**

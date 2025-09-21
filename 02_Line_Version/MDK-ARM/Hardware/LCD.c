@@ -2,6 +2,8 @@
 #include "Delay.h"
 #include "OLED.h"
 
+#include "Timer.h"
+
 uint16_t LCD_LINE_BUFF[LCD_WIDTH];
 
 // --------------------------------------------------------------------// 驱动层
@@ -291,4 +293,5 @@ void LCD_FullScreen_Fill(uint16_t color)
         LCD_LineBuf_Fill(y, color);  // 填充当前行的缓冲区
         LCD_LineBuf_Send(y);         // 发送该行到LCD
     }
+	Timer_FPS_Inc_Cnt();
 }
