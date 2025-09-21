@@ -48,7 +48,8 @@ void LCD_SPI_Init(void)
 {
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, ENABLE);
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
-	
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);  				// 使能DMA2时钟
+
 	GPIO_InitTypeDef  GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5|GPIO_Pin_7;				// 5:SPI_SCK 7:SPI_MOSI
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;						// 复用输出模式
@@ -71,6 +72,24 @@ void LCD_SPI_Init(void)
 	SPI_InitStructure.SPI_CRCPolynomial = 7;							// CRC多项式，暂时用不到，给默认值7
 	SPI_Init(SPI1, &SPI_InitStructure);									// 将结构体变量交给SPI_Init，配置SPI1
 	SPI_Cmd(SPI1,ENABLE);
+
+	DMA_InitTypeDef DMA_InitStruct;
+    DMA_InitStruct.DMA_Channel = DMA_Channel_3;  						// 通道3（对应SPI1_TX）
+    DMA_InitStruct.DMA_PeripheralBaseAddr = (uint32_t)&SPI1->DR;  		// 外设地址：SPI1数据寄存器
+    DMA_InitStruct.DMA_Memory0BaseAddr = (uint32_t)LCD_AreaBuf;  		// 内存地址：区域缓冲区
+    DMA_InitStruct.DMA_DIR = DMA_DIR_MemoryToPeripheral;  				// 方向：内存→外设
+    DMA_InitStruct.DMA_BufferSize = AREA_BUF_SIZE * 2;  				// 缓冲大小：每个像素2字节（16位色）
+    DMA_InitStruct.DMA_PeripheralInc = DMA_PeripheralInc_Disable;  		// 外设地址不递增
+    DMA_InitStruct.DMA_MemoryInc = DMA_MemoryInc_Enable;  				// 内存地址递增
+    DMA_InitStruct.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;// 外设数据宽度：8位
+    DMA_InitStruct.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;  		// 内存数据宽度：8位
+    DMA_InitStruct.DMA_Mode = DMA_Mode_Normal;  						// 普通模式（一次发送完成后停止）
+    DMA_InitStruct.DMA_Priority = DMA_Priority_High;  					// 高优先级
+    DMA_InitStruct.DMA_FIFOMode = DMA_FIFOMode_Disable;
+    DMA_Init(DMA2_Stream3, &DMA_InitStruct);
+
+    // 使能SPI1的DMA发送
+    SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Tx, ENABLE);
 }
 
 // 交换1字节
@@ -282,16 +301,21 @@ void LCD_AreaBuf_Fill(uint16_t color)
 void LCD_Area_Refresh(uint8_t area)
 {
     uint16_t yStart, yEnd;
-    LCD_GetAreaYRange(area, &yStart, &yEnd);
-    if (yStart >= LCD_HEIGHT) return;
-    LCD_Address_Set(0, yStart, LCD_WIDTH - 1, yEnd);
+    
+    LCD_GetAreaYRange(area, &yStart, &yEnd);							// 获取区域的Y坐标范围
+    LCD_Address_Set(0, yStart, LCD_WIDTH - 1, yEnd);					// 设置LCD显示区域
     LCD_W_DC(1);
     LCD_W_CS(0);
-    for (uint32_t i = 0; i < AREA_BUF_SIZE; i++)
-    {
-        LCD_SPI_SwapByte(LCD_AreaBuf[i] >> 8);
-        LCD_SPI_SwapByte(LCD_AreaBuf[i] & 0xFF);
-    }
+    
+    DMA_Cmd(DMA2_Stream3, DISABLE);										// 禁用DMA流（配置前必须先禁用）
+    
+    while (DMA_GetCmdStatus(DMA2_Stream3) != DISABLE);					// 等待DMA禁用完成
+    DMA_ClearFlag(DMA2_Stream3, DMA_FLAG_TCIF3 | DMA_FLAG_HTIF3 | DMA_FLAG_TEIF3 | 
+                 DMA_FLAG_DMEIF3 | DMA_FLAG_FEIF3);
+
+    DMA_SetCurrDataCounter(DMA2_Stream3, AREA_BUF_SIZE * 2);
+    DMA_Cmd(DMA2_Stream3, ENABLE);
+    while (DMA_GetFlagStatus(DMA2_Stream3, DMA_FLAG_TCIF3) == RESET);
     LCD_W_CS(1);
 }
 

@@ -12,10 +12,10 @@ int main(void)
     Timer_FPS_Init();   // 初始化定时器（1秒中断计算帧率）
 
     LCD_FullScreen_SetColor(0xFFFF);
-    LCD_AreaBuf_Fill(0x0000);
-    LCD_Area_Refresh(0);
+    
     while(1)
     {
-        
+        LCD_FullScreen_SetColor(0xFFFF);
+        LCD_FullScreen_SetColor(0x0000);
     }
 }
