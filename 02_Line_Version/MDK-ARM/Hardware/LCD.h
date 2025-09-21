@@ -14,6 +14,6 @@
 #endif
 
 void LCD_Init(void);
-void LCD_Color_Fill(uint16_t xsta, uint16_t ysta, uint16_t xend, uint16_t yend, uint16_t color);
+void LCD_FullScreen_Fill(uint16_t color);
 
 #endif

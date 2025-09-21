@@ -1,5 +1,8 @@
 #include "LCD.h"
 #include "Delay.h"
+#include "OLED.h"
+
+uint16_t LCD_LINE_BUFF[LCD_WIDTH];
 
 // --------------------------------------------------------------------// 驱动层
 // 背光
@@ -250,17 +253,42 @@ void LCD_Address_Set(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 	}
 }
 
-void LCD_Color_Fill(uint16_t xsta, uint16_t ysta, uint16_t xend, uint16_t yend, uint16_t color)
+// ---------------------------------------------------------------------// 应用层
+
+// 发送指定行的缓冲区数据到LCD
+void LCD_LineBuf_Send(uint16_t y)
 {
-    uint32_t pixel_num = (xend - xsta + 1) * (yend - ysta + 1);
-    uint32_t i;
-	LCD_Address_Set(xsta, ysta, xend, yend);  							// 设置显示范围
-    LCD_W_DC(1);  														// 切换到数据模式
-    LCD_W_CS(0);  														// 片选使能
-    for (i = 0; i < pixel_num; i++)
+    LCD_Address_Set(0, y, LCD_WIDTH - 1, y);
+    
+    LCD_W_DC(1);
+    LCD_W_CS(0);
+    for (uint16_t x = 0; x < LCD_WIDTH; x++)
     {
-        LCD_SPI_SwapByte(color >> 8);  									// 发送高8位
-        LCD_SPI_SwapByte(color & 0xFF);  								// 发送低8位
+        LCD_SPI_SwapByte(LCD_LINE_BUFF[x] >> 8);  						// 高8位
+        LCD_SPI_SwapByte(LCD_LINE_BUFF[x] & 0xFF); 						// 低8位
     }
     LCD_W_CS(1);
+}
+
+// 将一行设置颜色
+void LCD_LineBuf_Fill(uint16_t y, uint16_t color)
+{
+    for (uint16_t x = 0; x < LCD_WIDTH; x++)
+    {
+        LCD_LINE_BUFF[x] = color;
+    }
+}
+
+void LCD_DrawPoint_LineBuf(uint16_t x, uint16_t y, uint16_t color)
+{
+    LCD_LINE_BUFF[x] = color;
+}
+
+void LCD_FullScreen_Fill(uint16_t color)
+{
+    for (uint16_t y = 0; y < LCD_HEIGHT; y++)
+    {
+        LCD_LineBuf_Fill(y, color);  // 填充当前行的缓冲区
+        LCD_LineBuf_Send(y);         // 发送该行到LCD
+    }
 }
