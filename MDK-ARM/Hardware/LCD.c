@@ -206,32 +206,48 @@ void LCD_Init(void)
 	LCD_Send_Cmd(0x29);
 }
 
-void LCD_Set_Cursor(uint16_t x, uint16_t y)
-{
-	LCD_Send_Cmd(0x2a);
-    LCD_Send_Data8(x >> 8);
-    LCD_Send_Data8(x & 0XFF);
-    LCD_Send_Cmd(0x2b);
-    LCD_Send_Data8(y >> 8);
-    LCD_Send_Data8(y & 0XFF);
-	LCD_Send_Cmd(0x2c);
-}
-
 void LCD_Address_Set(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)
 {
-	LCD_Send_Cmd(0x2a);  												// 设置列地址范围
-	LCD_Send_Data8(x1 >> 8);
-	LCD_Send_Data8(x1 & 0xFF);
-	LCD_Send_Data8(x2 >> 8);
-	LCD_Send_Data8(x2 & 0xFF);
-	
-	LCD_Send_Cmd(0x2b);  												// 设置行地址范围
-	LCD_Send_Data8(y1 >> 8);
-	LCD_Send_Data8(y1 & 0xFF);
-	LCD_Send_Data8(y2 >> 8);
-	LCD_Send_Data8(y2 & 0xFF);
-	
-	LCD_Send_Cmd(0x2c);  												// 准备写入数据
+	if(LCD_ROTATE==0)
+	{
+		LCD_Send_Cmd(0x2a);
+		LCD_Send_Data16(x1);
+		LCD_Send_Data16(x2);
+		LCD_Send_Cmd(0x2b);
+		LCD_Send_Data16(y1);
+		LCD_Send_Data16(y2);
+		LCD_Send_Cmd(0x2c);
+	}
+	else if(LCD_ROTATE==1)
+	{
+		LCD_Send_Cmd(0x2a);
+		LCD_Send_Data16(x1);
+		LCD_Send_Data16(x2);
+		LCD_Send_Cmd(0x2b);
+		LCD_Send_Data16(y1);
+		LCD_Send_Data16(y2);
+		LCD_Send_Cmd(0x2c);
+	}
+	else if(LCD_ROTATE==2)
+	{
+		LCD_Send_Cmd(0x2a);
+		LCD_Send_Data16(x1);
+		LCD_Send_Data16(x2);
+		LCD_Send_Cmd(0x2b);
+		LCD_Send_Data16(y1);
+		LCD_Send_Data16(y2);
+		LCD_Send_Cmd(0x2c);
+	}
+	else
+	{
+		LCD_Send_Cmd(0x2a);
+		LCD_Send_Data16(x1);
+		LCD_Send_Data16(x2);
+		LCD_Send_Cmd(0x2b);
+		LCD_Send_Data16(y1);
+		LCD_Send_Data16(y2);
+		LCD_Send_Cmd(0x2c);
+	}
 }
 
 void LCD_Color_Fill(uint16_t xsta, uint16_t ysta, uint16_t xend, uint16_t yend, uint16_t color)
