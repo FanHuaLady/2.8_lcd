@@ -4,12 +4,13 @@
  */
 
 /*Copy this file as "lv_port_disp.c" and set this value to "1" to enable content*/
-#if 0
+#if 1
 
 /*********************
  *      INCLUDES
  *********************/
 #include "lv_port_disp_template.h"
+#include "LCD.h"
 #include <stdbool.h>
 
 /*********************
@@ -171,11 +172,13 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
             for(x = area->x1; x <= area->x2; x++) {
                 /*Put a pixel to the display. For example:*/
                 /*put_px(x, y, *color_p)*/
+				LCD_DrawPoint((uint16_t)x, (uint16_t)y, color_p->full);								// 使用我的画点函数
                 color_p++;
             }
         }
     }
-
+	
+	LCD_Full_Refresh();																				// 刷新屏幕
     /*IMPORTANT!!!
      *Inform the graphics library that you are ready with the flushing*/
     lv_disp_flush_ready(disp_drv);
