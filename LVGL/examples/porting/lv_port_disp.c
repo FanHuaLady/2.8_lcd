@@ -25,25 +25,11 @@
     #define MY_DISP_VER_RES    240
 #endif
 
-/**********************
- *      TYPEDEFS
- **********************/
-
-/**********************
- *  STATIC PROTOTYPES
- **********************/
 static void disp_init(void);
-
 static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p);
-//static void gpu_fill(lv_disp_drv_t * disp_drv, lv_color_t * dest_buf, lv_coord_t dest_width,
-//        const lv_area_t * fill_area, lv_color_t color);
 
-/**********************
- *  STATIC VARIABLES
- **********************/
- 
- static lv_disp_draw_buf_t draw_buf_dsc_1;														// 连接 “用户定义的内存缓冲区” 和 “显示驱动” 的桥梁
- static lv_color_t mybuff[MY_DISP_HOR_RES * 40];												// 小型缓冲区域
+static lv_disp_draw_buf_t draw_buf_dsc_1;														// 连接 “用户定义的内存缓冲区” 和 “显示驱动” 的桥梁
+static lv_color_t mybuff[MY_DISP_HOR_RES * 40];													// 小型缓冲区域
  
 /**********************
  *      MACROS
@@ -106,11 +92,11 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
         uint32_t data_size = width * height * sizeof(lv_color_t);
         
         LCD_Address_Set(area->x1, area->y1, area->x2, area->y2);
+		
         LCD_W_DC(1);  																// 数据模式
         LCD_W_CS(0);  																// 片选使能
-		
 		SPI_I2S_DMACmd(SPI1, SPI_I2S_DMAReq_Tx, ENABLE);
-        
+		
         // 配置DMA传输
         DMA_Cmd(DMA2_Stream3, DISABLE);  											// 先关闭DMA
         while(DMA_GetCmdStatus(DMA2_Stream3) != DISABLE);  							// 等待关闭完成
@@ -120,29 +106,11 @@ static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_colo
         while(DMA_GetFlagStatus(DMA2_Stream3, DMA_FLAG_TCIF3) == RESET);			// 等待DMA传输完成
         DMA_ClearFlag(DMA2_Stream3,DMA_FLAG_TCIF3);
         
-        LCD_W_CS(1);  // 片选禁用
+        LCD_W_CS(1);  																// 片选禁用
     }
 
     lv_disp_flush_ready(disp_drv);
 }
-
-/*OPTIONAL: GPU INTERFACE*/
-
-/*If your MCU has hardware accelerator (GPU) then you can use it to fill a memory with a color*/
-//static void gpu_fill(lv_disp_drv_t * disp_drv, lv_color_t * dest_buf, lv_coord_t dest_width,
-//                    const lv_area_t * fill_area, lv_color_t color)
-//{
-//    /*It's an example code which should be done by your GPU*/
-//    int32_t x, y;
-//    dest_buf += dest_width * fill_area->y1; /*Go to the first line*/
-//
-//    for(y = fill_area->y1; y <= fill_area->y2; y++) {
-//        for(x = fill_area->x1; x <= fill_area->x2; x++) {
-//            dest_buf[x] = color;
-//        }
-//        dest_buf+=dest_width;    /*Go to the next line*/
-//    }
-//}
 
 #else /*Enable this file at the top*/
 

@@ -1,4 +1,13 @@
-Load "e:\\github\\15_2.8LVGL\\Project\\Objects\\STM32F429.axf" 
-Erase Done.Programming Done.Verify OK.Application running ...
-RDDI-DAP Error
-Flash Load finished at 21:50:21
+*** Using Compiler 'V5.06 update 5 (build 528)', folder: 'D:\Keil5M\ARM\ARMCC\Bin'
+Build target 'STM32F407'
+compiling lv_port_indev.c...
+..\LVGL\examples\porting\lv_port_indev.c(59): warning:  #177-D: variable "encoder_diff"  was declared but never referenced
+  static int32_t encoder_diff;
+..\LVGL\examples\porting\lv_port_indev.c(60): warning:  #177-D: variable "encoder_state"  was declared but never referenced
+  static lv_indev_state_t encoder_state;
+..\LVGL\examples\porting\lv_port_indev.c: 2 warnings, 0 errors
+linking...
+Program Size: Code=152388 RO-data=18504 RW-data=556 ZI-data=48084  
+FromELF: creating hex file...
+".\Objects\STM32F429.axf" - 0 Error(s), 2 Warning(s).
+Build Time Elapsed:  00:00:04

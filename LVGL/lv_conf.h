@@ -50,7 +50,7 @@
 #define LV_MEM_CUSTOM 0																									// 此处改为0
 #if LV_MEM_CUSTOM == 0
     /*Size of the memory available for `lv_mem_alloc()` in bytes (>= 2kB)*/
-    #define LV_MEM_SIZE (20U * 1024U)          /*[bytes]*/
+    #define LV_MEM_SIZE (25U * 1024U)          /*[bytes]*/
 
     /*Set an address for the memory pool instead of allocating it as a normal array. Can be in external SRAM too.*/
     #define LV_MEM_ADR 0     /*0: unused*/
@@ -490,8 +490,8 @@
 
 #define LV_USE_LABEL      1
 #if LV_USE_LABEL
-    #define LV_LABEL_TEXT_SELECTION 1 /*Enable selecting text of the label*/
-    #define LV_LABEL_LONG_TXT_HINT 1  /*Store some extra info in labels to speed up drawing of very long texts*/
+    #define LV_LABEL_TEXT_SELECTION 1 /*允许选择标签中的文本*/
+    #define LV_LABEL_LONG_TXT_HINT 1  /*在标签中存储一些额外信息，以加快超长文本的绘制速度*/
 #endif
 
 #define LV_USE_LINE       1
@@ -717,7 +717,7 @@
 /*1: Support using images as font in label or span widgets */
 #define LV_USE_IMGFONT 0
 
-/*1: Enable a published subscriber based messaging system */
+/*1: 启用基于发布/订阅的消息系统 */
 #define LV_USE_MSG 0
 
 /*1: Enable Pinyin input method*/

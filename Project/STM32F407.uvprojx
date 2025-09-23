@@ -337,7 +337,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--diag_suppress=188,546,68,111</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F40_41xxx,</Define>
               <Undefine></Undefine>
               <IncludePath>..\STM32\CMSIS\Device\ST\STM32F4xx\Include;..\STM32\CMSIS\Include;..\STM32\STM32F4xx_StdPeriph_Driver\inc;..\MY;..\Drive\Include;..\LVGL;..\LVGL\src;..\LVGL\examples\porting</IncludePath>
@@ -445,14 +445,14 @@
               <FilePath>..\Drive\Include\Touch.h</FilePath>
             </File>
             <File>
-              <FileName>usart.c</FileName>
+              <FileName>Usart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\Drive\Source\usart.c</FilePath>
+              <FilePath>..\Drive\Source\Usart.c</FilePath>
             </File>
             <File>
-              <FileName>usart.h</FileName>
+              <FileName>Usart.h</FileName>
               <FileType>5</FileType>
-              <FilePath>..\Drive\Include\usart.h</FilePath>
+              <FilePath>..\Drive\Include\Usart.h</FilePath>
             </File>
           </Files>
         </Group>

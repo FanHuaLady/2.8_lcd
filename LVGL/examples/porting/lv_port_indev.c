@@ -51,13 +51,13 @@ static void touchpad_get_xy(lv_coord_t * x, lv_coord_t * y);
  *  STATIC VARIABLES
  **********************/
 lv_indev_t * indev_touchpad;
-lv_indev_t * indev_mouse;
-lv_indev_t * indev_keypad;
-lv_indev_t * indev_encoder;
-lv_indev_t * indev_button;
+//lv_indev_t * indev_mouse;
+//lv_indev_t * indev_keypad;
+//lv_indev_t * indev_encoder;
+//lv_indev_t * indev_button;
 
-static int32_t encoder_diff;
-static lv_indev_state_t encoder_state;
+//static int32_t encoder_diff;
+//static lv_indev_state_t encoder_state;
 
 /**********************
  *      MACROS
@@ -183,6 +183,7 @@ void lv_port_indev_init(void)
 static void touchpad_init(void)
 {
     /*Your code comes here*/
+	Touch_Init();
 }
 
 /*Will be called by the library to read the touchpad*/
@@ -190,7 +191,9 @@ static void touchpad_read(lv_indev_drv_t * indev_drv, lv_indev_data_t * data)
 {
     static lv_coord_t last_x = 0;
     static lv_coord_t last_y = 0;
-
+	
+	Touch_Query();
+	
     /*Save the pressed coordinates and the state*/
     if(touchpad_is_pressed()) 
 	{
@@ -409,6 +412,6 @@ static void touchpad_get_xy(lv_coord_t * x, lv_coord_t * y)
 
 #else /*Enable this file at the top*/
 
-/*This dummy typedef exists purely to silence -Wpedantic.*/
+/*这个虚定义类型的存在仅仅是为了消除“-Wpedantic”警告。.*/
 typedef int keep_pedantic_happy;
 #endif

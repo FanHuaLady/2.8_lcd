@@ -14,9 +14,7 @@
 int main()
 {
 	Timer_Init();
-	LCD_Init();
-	Touch_Init();
-	Usart_Config();
+	Usart_Init();
 	
 	lv_init();                             											// LVGL 初始化
 	lv_port_disp_init();                   											// 注册LVGL的显示任务
@@ -36,9 +34,9 @@ int main()
     lv_obj_set_size(btn, 120, 40);                          						// 大小：120×40
     lv_obj_set_pos(btn, 100, 180);                           						// 定位
 	
-	lv_obj_t *label_btn = lv_label_create(btn);             // 按钮上的标签
-    lv_label_set_text(label_btn, "click me");               // 英文文本
-    lv_obj_center(label_btn);                               // 标签居中
+	lv_obj_t *label_btn = lv_label_create(btn);             						// 按钮上的标签
+    lv_label_set_text(label_btn, "click me");               						// 英文文本
+    lv_obj_center(label_btn);                               						// 标签居中
 	
 	/*
 	无法使用列表
@@ -57,9 +55,8 @@ int main()
 	
 	while(1)
 	{
-		Delay_ms(10);
+		Delay_ms(1);
 		lv_timer_handler();
-		Touch_Query();
 	}
 }
 
