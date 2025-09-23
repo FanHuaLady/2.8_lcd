@@ -114,15 +114,19 @@ void PendSV_Handler(void)
 {
 }
 
+static __IO uint32_t TimingDelay;
 
-extern void TimingDelay_Decrement(void);	//函数声明，定义在delay.c
+void TimingDelay_Decrement(void)
+{
+  if (TimingDelay != 0x00)
+  { 
+    TimingDelay--;
+  }
+}
 
-//	函数：SysTick中断服务处理
-//
 void SysTick_Handler(void)
 {
-	TimingDelay_Decrement();
-
+  TimingDelay_Decrement();
 }
 
 

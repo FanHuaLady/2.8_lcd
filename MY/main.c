@@ -2,18 +2,25 @@
 #include "delay.h"
 #include "LCD.h"
 #include "Timer.h"
+#include "Touch.h"
+#include "usart.h"
 
 #include "lvgl.h"
 #include "lv_port_disp.h"
+#include "lv_port_indev.h"
+
+#include <stdio.h>
 
 int main()
 {
-	Delay_Init();
 	Timer_Init();
 	LCD_Init();
+	Touch_Init();
+	Usart_Config();
 	
 	lv_init();                             											// LVGL 初始化
 	lv_port_disp_init();                   											// 注册LVGL的显示任务
+	lv_port_indev_init();
 	
 	lv_obj_t *spinner = lv_spinner_create(lv_scr_act(),1000,60);					//设置指示器
 	lv_obj_set_style_arc_width(spinner,15,LV_PART_MAIN);							//设置主体圆弧宽度
@@ -28,6 +35,10 @@ int main()
 	lv_obj_t *btn = lv_btn_create(lv_scr_act());            						// 创建按钮
     lv_obj_set_size(btn, 120, 40);                          						// 大小：120×40
     lv_obj_set_pos(btn, 100, 180);                           						// 定位
+	
+	lv_obj_t *label_btn = lv_label_create(btn);             // 按钮上的标签
+    lv_label_set_text(label_btn, "click me");               // 英文文本
+    lv_obj_center(label_btn);                               // 标签居中
 	
 	/*
 	无法使用列表
@@ -48,6 +59,7 @@ int main()
 	{
 		Delay_ms(10);
 		lv_timer_handler();
+		Touch_Query();
 	}
 }
 

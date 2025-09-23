@@ -1,4 +1,4 @@
-Load "e:\\github\\15_2.8LCD\\Project\\Objects\\STM32F429.axf" 
+Load "e:\\github\\15_2.8LVGL\\Project\\Objects\\STM32F429.axf" 
 Erase Done.Programming Done.Verify OK.Application running ...
 RDDI-DAP Error
-Flash Load finished at 09:19:03
+Flash Load finished at 21:50:21

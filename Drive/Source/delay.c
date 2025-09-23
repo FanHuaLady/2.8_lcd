@@ -1,50 +1,41 @@
-/***
-	***************************************************************************
-	*	@file  	delay.c
-	*	@brief   delay接口相关函数
-   ***************************************************************************
-   *  @description
-	*
-	*  SysTick定时器配置为1ms中断，实现毫秒延时
-	* 	
-	***************************************************************************
-***/
+#include <stm32f4xx.h>
 
-#include "delay.h"
-
-static __IO uint32_t TimingDelay;  //计数变量
-
-
-//	函数：延时初始化
-//	说明：配置 SysTick 为1ms中断，并启动定时器
-//
-void Delay_Init(void)
+/**
+  * @brief  微秒级延时
+  * @param  xus 延时时长，范围：0~233015
+  * @retval 无
+  */
+void Delay_us(uint32_t xus)
 {
-	SysTick_Config(SystemCoreClock / 1000);  //配置SysTick时钟为1ms中断
+	SysTick->LOAD = 72 * xus;				//设置定时器重装值
+	SysTick->VAL = 0x00;					//清空当前计数值
+	SysTick->CTRL = 0x00000005;				//设置时钟源为HCLK，启动定时器
+	while(!(SysTick->CTRL & 0x00010000));	//等待计数到0
+	SysTick->CTRL = 0x00000004;				//关闭定时器
 }
 
-//	函数：计时函数
-//	说明：在 SysTick 中断服务函数里被调用
-//
-void TimingDelay_Decrement(void)
+/**
+  * @brief  毫秒级延时
+  * @param  xms 延时时长，范围：0~4294967295
+  * @retval 无
+  */
+void Delay_ms(uint32_t xms)
 {
-	if (TimingDelay != 0)
-	{ 
-		TimingDelay--;
+	while(xms--)
+	{
+		Delay_us(1000);
 	}
 }
-
-//	函数：毫秒延时
-// 参数：nTime - 延时时间，单位ms
-//	说明：每次调用都会重新给TimingDelay赋值，实现 n 毫秒的延时，最大延时 4294967295 ms。	
-//
-void Delay_ms(uint32_t nTime)
-{ 
-	TimingDelay = nTime;
-
-	while(TimingDelay != 0);
-}
-
-
-
-
+ 
+/**
+  * @brief  秒级延时
+  * @param  xs 延时时长，范围：0~4294967295
+  * @retval 无
+  */
+void Delay_s(uint32_t xs)
+{
+	while(xs--)
+	{
+		Delay_ms(1000);
+	}
+} 

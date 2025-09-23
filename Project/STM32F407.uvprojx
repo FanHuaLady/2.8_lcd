@@ -405,16 +405,6 @@
           <GroupName>Drive</GroupName>
           <Files>
             <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drive\Source\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>delay.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Drive\Include\delay.h</FilePath>
-            </File>
-            <File>
               <FileName>LCD.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Drive\Include\LCD.h</FilePath>
@@ -433,6 +423,36 @@
               <FileName>Timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drive\Source\Timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drive\Include\Delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drive\Source\Delay.c</FilePath>
+            </File>
+            <File>
+              <FileName>Touch.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drive\Source\Touch.c</FilePath>
+            </File>
+            <File>
+              <FileName>Touch.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drive\Include\Touch.h</FilePath>
+            </File>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drive\Source\usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drive\Include\usart.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -483,6 +503,11 @@
               <FileName>stm32f4xx_tim.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\STM32\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f4xx_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\STM32\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_i2c.c</FilePath>
             </File>
           </Files>
         </Group>
