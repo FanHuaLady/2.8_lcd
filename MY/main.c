@@ -11,6 +11,11 @@
 
 #include <stdio.h>
 
+void my_log_cb(const char * buf)
+{
+    printf("%s\r\n", buf); // 直接打印LVGL已经格式化好的日志字符串
+}
+
 int main()
 {
 	Timer_Init();
@@ -19,6 +24,8 @@ int main()
 	lv_init();                             											// LVGL 初始化
 	lv_port_disp_init();                   											// 注册LVGL的显示任务
 	lv_port_indev_init();
+	
+	lv_log_register_print_cb(my_log_cb);
 	
 	lv_obj_t *spinner = lv_spinner_create(lv_scr_act(),1000,60);					//设置指示器
 	lv_obj_set_style_arc_width(spinner,15,LV_PART_MAIN);							//设置主体圆弧宽度

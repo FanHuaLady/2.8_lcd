@@ -231,17 +231,17 @@
  *-----------*/
 
 /*Enable the log module*/
-#define LV_USE_LOG 0
+#define LV_USE_LOG 1
 #if LV_USE_LOG
 
     /*How important log should be added:
-    *LV_LOG_LEVEL_TRACE       A lot of logs to give detailed information
-    *LV_LOG_LEVEL_INFO        Log important events
-    *LV_LOG_LEVEL_WARN        Log if something unwanted happened but didn't cause a problem
-    *LV_LOG_LEVEL_ERROR       Only critical issue, when the system may fail
-    *LV_LOG_LEVEL_USER        Only logs added by the user
-    *LV_LOG_LEVEL_NONE        Do not log anything*/
-    #define LV_LOG_LEVEL LV_LOG_LEVEL_WARN
+    *LV_LOG_LEVEL_TRACE       有大量的日志可提供详细信息
+    *LV_LOG_LEVEL_INFO        记录重要事件
+    *LV_LOG_LEVEL_WARN        记录下那些虽发生但未造成问题的不愉快事件。
+    *LV_LOG_LEVEL_ERROR       唯一的关键问题在于，当系统可能出现故障时的情况。
+    *LV_LOG_LEVEL_USER        只有用户添加的日志
+    *LV_LOG_LEVEL_NONE        不要记录任何内容*/
+    #define LV_LOG_LEVEL LV_LOG_LEVEL_TRACE
 
     /*1: Print the log with 'printf';
     *0: User need to register a callback with `lv_log_register_print_cb()`*/
